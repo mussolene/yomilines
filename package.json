@@ -1,6 +1,6 @@
 {
   "name": "yomilines",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Static Japanese lyrics/text reading tool for kana and romaji line blocks.",

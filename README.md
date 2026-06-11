@@ -1,67 +1,171 @@
 # yomilines
 
-yomilines is a client-only static web app for reading Japanese lyrics and text. Paste multiline Japanese text and it outputs each non-empty line as a compact block:
+[![CI](https://github.com/mussolene/yomilines/actions/workflows/ci.yml/badge.svg)](https://github.com/mussolene/yomilines/actions/workflows/ci.yml)
+[![Deploy GitHub Pages](https://github.com/mussolene/yomilines/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/mussolene/yomilines/actions/workflows/deploy-pages.yml)
+[![Release](https://github.com/mussolene/yomilines/actions/workflows/release.yml/badge.svg)](https://github.com/mussolene/yomilines/actions/workflows/release.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-live-1f883d)](https://mussolene.github.io/yomilines/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)](tsconfig.json)
+[![React + Vite](https://img.shields.io/badge/React%20%2B%20Vite-static-646cff)](package.json)
+
+**Live app:** https://mussolene.github.io/yomilines/  
+**Repository:** https://github.com/mussolene/yomilines
+
+> EN: A client-only Japanese lyrics and text reader that converts pasted lines into original text, kana readings, romaji, and optional experimental English translation.  
+> RU: Клиентское приложение для чтения японских текстов и лирики: вставляешь строки, получаешь оригинал, kana-чтение, romaji и опциональный экспериментальный перевод на английский.
+
+![yomilines screenshot](docs/screenshot.jpg)
+
+## English
+
+### What It Does
+
+yomilines is a static GitHub Pages web app for reading Japanese lyrics and text. Paste multiline Japanese text and convert each non-empty line into a compact reading block.
 
 ```text
 original line
 kana reading line
 romaji line
+optional English translation
 ```
 
-Translation is optional and experimental. The core reading flow does not call AI or translation APIs; clicking Translate downloads a public browser model and runs it locally.
+The default preview is ruby-style: each token is shown with small romaji above and kana below, while the copy output remains plain Markdown text.
 
-## Features
+### Features
 
 - Japanese morphological analysis in the browser with `kuromoji`.
 - Kana conversion and romaji generation with `wanakana`.
-- Mixed Japanese, Latin words, numbers, punctuation, emoji, and spacing are preserved where the tokenizer exposes them.
-- Ruby-style preview mode groups each token with small romaji above and kana below.
-- Line preview mode keeps the original three-line block view.
-- Optional Japanese-to-English translation can add a fourth line using a browser-loaded Transformers.js model.
-- Copy output as plain Markdown text.
-- Responsive two-pane layout with light and dark color schemes.
-- Static GitHub Pages deployment with no backend, cookies, sessions, or secrets.
+- Ruby-style preview with per-token readings.
+- Classic three-line preview mode.
+- Optional Japanese-to-English translation through a browser-loaded Transformers.js model.
+- Copy output as Markdown/plain text.
+- Static deployment to GitHub Pages.
+- No backend, no accounts, no cookies, no tracking, no committed secrets.
 
-## Limitations
+### Limitations
 
-- Readings depend on the bundled IPADIC dictionary used by `kuromoji`; unusual names, ateji, stylized lyrics, or slang can be wrong.
-- Romaji is derived from the kana reading line, not from a separate pronunciation model.
-- Empty lines are ignored for conversion, while copied blocks are separated by blank lines.
-- Ruby-style romaji is split by kana mora for readability; copied Markdown still uses normal romaji words.
-- Translation is Japanese-to-English only, experimental, and depends on a roughly 110 MB model download the first time it is used.
-- Offline use is possible after the page and dictionary assets have been loaded by the browser, subject to browser caching behavior.
+- Readings depend on the bundled IPADIC dictionary used by `kuromoji`; names, ateji, slang, or stylized lyrics can be wrong.
+- Romaji is derived from kana, not from a separate pronunciation model.
+- Translation is experimental, Japanese-to-English only, and can miss lyric nuance.
+- First translation use downloads a large public browser model, roughly 100+ MB depending on cache/runtime.
+- Offline behavior depends on browser caching after assets and models have loaded.
 
-## Architecture
+## Русский
 
-- `src/domain/convertText.ts`: splits input into non-empty lines and converts them.
-- `src/domain/convertLine.ts`: converts one line into `{ original, kana, romaji }`.
-- `src/domain/tokenizer.ts`: initializes the `kuromoji` tokenizer once and reuses it.
-- `src/domain/markdown.ts`: exports line blocks as plain text Markdown.
-- `src/domain/translateText.ts`: lazily loads the optional in-browser translation model.
-- `src/domain/security.ts`: plain-text normalization and clipboard handling.
-- `src/components/*`: presentation-focused React components.
+### Что Это
 
-The tokenizer dictionary is copied from `node_modules/kuromoji/dict` into the built static assets under `dict/`.
+yomilines — статическое приложение для GitHub Pages, которое помогает читать японские тексты и песни. Вставляешь многострочный текст, а приложение превращает каждую непустую строку в блок чтения.
 
-## Security Model
+```text
+оригинальная строка
+строка чтения kana
+строка romaji
+опциональный перевод на английский
+```
 
-All user input is treated as untrusted text. The app renders React text nodes only, avoids `dangerouslySetInnerHTML`, does not use `eval` or `new Function`, and has no inline event handlers. Clipboard writes use plain text.
+По умолчанию используется ruby-предпросмотр: над каждым токеном показывается маленькое romaji, под ним kana. Для копирования остается простой Markdown/plain text.
 
-The optional translation feature does not use API keys or secrets. It downloads a public ONNX model from Hugging Face when the user clicks Translate, then runs inference in the browser. This path depends on ONNX Runtime Web through `@xenova/transformers`; if you deploy a strict CSP, test translation carefully because some ONNX Runtime builds require eval-like WebAssembly/bootstrap behavior.
+### Возможности
 
-CSRF is not applicable in v1 because there is no authentication, cookies, sessions, or state-changing backend. This is documented explicitly so future server-backed features revisit the threat model.
+- Морфологический разбор японского в браузере через `kuromoji`.
+- Конвертация kana и romaji через `wanakana`.
+- Ruby-предпросмотр с чтением по токенам.
+- Классический трехстрочный режим отображения.
+- Опциональный перевод Japanese → English через модель Transformers.js в браузере.
+- Копирование результата как Markdown/plain text.
+- Деплой на GitHub Pages.
+- Без backend, аккаунтов, cookies, трекинга и секретов в репозитории.
 
-Recommended Content Security Policy for static hosting:
+### Ограничения
+
+- Чтения зависят от IPADIC-словаря `kuromoji`; имена, ateji, сленг и стилизованная лирика могут ошибаться.
+- Romaji строится из kana, а не из отдельной pronunciation-модели.
+- Перевод экспериментальный, только Japanese → English, и на песенных строках может промахиваться по смыслу.
+- Первый запуск перевода скачивает большую публичную browser-модель, примерно 100+ MB с учетом кэша/runtime.
+- Offline-режим зависит от того, успел ли браузер закэшировать assets и модель.
+
+## Architecture / Архитектура
+
+```mermaid
+flowchart LR
+  A[Textarea input] --> B[convertText]
+  B --> C[kuromoji tokenizer singleton]
+  C --> D[LineBlock segments]
+  D --> E[Ruby preview]
+  D --> F[Lines preview]
+  D --> G[Markdown export]
+  D --> H[Optional browser translation]
+  H --> I[Fourth line]
+```
+
+| Layer     | Files                 | Responsibility                                                         |
+| --------- | --------------------- | ---------------------------------------------------------------------- |
+| App shell | `src/App.tsx`         | State, actions, status, orchestration                                  |
+| Domain    | `src/domain/*`        | Conversion, tokenizer, romaji, Markdown, translation, security helpers |
+| UI        | `src/components/*`    | Presentation-only React components                                     |
+| Styles    | `src/styles.css`      | Responsive Material-inspired custom CSS                                |
+| CI/CD     | `.github/workflows/*` | Validation, tag releases, GitHub Pages deploy                          |
+
+## Release Cycle / Цикл Релиза
+
+```mermaid
+flowchart TD
+  A[Merge to main] --> B[CI validates main]
+  B --> C[Create tag vX.Y.Z]
+  C --> D[Release workflow]
+  C --> E[Pages deploy workflow]
+  D --> F[GitHub Release notes]
+  D --> G[dist zip + sha256]
+  E --> H[Published GitHub Pages app]
+```
+
+Releases and production deploys are tag-driven.
+
+1. Update code and merge/push to `main`.
+2. Run local checks:
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+```
+
+3. Create and push a version tag:
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+4. GitHub Actions will:
+
+- run validation,
+- build the static app,
+- publish GitHub Pages from the tag,
+- create a GitHub Release,
+- attach `yomilines-vX.Y.Z-dist.zip`,
+- attach `yomilines-vX.Y.Z-dist.zip.sha256`.
+
+Manual Pages deploy is still available through the `Deploy GitHub Pages` workflow.
+
+## Security Model / Модель Безопасности
+
+All user input is treated as untrusted text. The app renders React text nodes only, avoids `dangerouslySetInnerHTML`, does not use application-level `eval` or `new Function`, and has no inline event handlers. Clipboard writes use plain text.
+
+The optional translation feature uses `@xenova/transformers` and ONNX Runtime Web. It does not use API keys or secrets, but it downloads a public model from Hugging Face when the user clicks Translate. If you deploy a strict CSP, test translation carefully because ONNX Runtime builds may require eval-like WebAssembly/bootstrap behavior.
+
+CSRF is not applicable in v1 because there is no authentication, cookies, sessions, or state-changing backend.
+
+Recommended strict CSP for the core reader without translation:
 
 ```http
 Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'none';
 ```
 
-`style-src 'unsafe-inline'` is included because Vite injects CSS through the bundled app in development and many static hosts apply one policy to all environments. Tighten it if your hosting setup emits only external CSS and can use hashes.
+For experimental translation, `connect-src` must allow `https://huggingface.co` unless the model files are self-hosted. Depending on runtime behavior, `script-src 'unsafe-eval'` may also be required; treat that as a deliberate tradeoff.
 
-If you keep the experimental translation feature, `connect-src` must also allow `https://huggingface.co` for the first model download unless you self-host the model files. Depending on the runtime build, `script-src 'unsafe-eval'` may also be required for translation; avoid adding it unless translation has been tested and accepted as a deliberate tradeoff.
-
-## Accessibility
+## Accessibility / Доступность
 
 - Semantic regions, labels, and status messages.
 - Keyboard-accessible controls with visible focus states.
@@ -69,7 +173,7 @@ If you keep the experimental translation feature, `connect-src` must also allow 
 - Contrast-oriented light and dark CSS variables.
 - Status is conveyed with text, not color alone.
 
-## Development
+## Development / Разработка
 
 ```bash
 npm install
@@ -89,26 +193,21 @@ npm run format:check
 npm run preview
 ```
 
-## GitHub Pages Deployment
+## Deployment / Деплой
 
-This repository is configured for GitHub Pages using GitHub Actions.
-
-1. Push the repository to GitHub as `yomilines`.
-2. In GitHub, open Settings -> Pages.
-3. Set Build and deployment -> Source to GitHub Actions.
-4. Push to `main` or run the `Deploy GitHub Pages` workflow manually.
-
-The Vite base path is:
+Vite is configured for repository Pages deployment:
 
 ```ts
 base: process.env.GITHUB_PAGES === 'true' ? '/yomilines/' : '/';
 ```
 
-If you rename the repository, update `/yomilines/` in `vite.config.ts` to match the new repository name, then rebuild and redeploy.
+If the repository is renamed, update `/yomilines/` in `vite.config.ts`.
 
-## Contributing
+GitHub Pages should use **Settings → Pages → Build and deployment → Source → GitHub Actions**.
 
-- Keep v1 client-only and deterministic.
+## Contributing / Контрибьютинг
+
+- Keep the core reader client-only and deterministic.
 - Keep domain logic in `src/domain`.
-- Add tests for conversion, security, and UI behavior when changing behavior.
-- Run `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run build` before opening a pull request.
+- Add tests for conversion, Markdown, security, and UI behavior when changing behavior.
+- Run `npm run lint`, `npm run typecheck`, `npm run test`, and `npm run build` before releasing.

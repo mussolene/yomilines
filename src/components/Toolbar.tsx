@@ -1,19 +1,23 @@
 type ToolbarProps = {
   canCopy: boolean;
   canConvert: boolean;
+  canTranslate: boolean;
   onClear: () => void;
   onConvert: () => void;
   onCopy: () => void;
   onLoadSample: () => void;
+  onTranslate: () => void;
 };
 
 export function Toolbar({
   canCopy,
   canConvert,
+  canTranslate,
   onClear,
   onConvert,
   onCopy,
-  onLoadSample
+  onLoadSample,
+  onTranslate
 }: ToolbarProps) {
   return (
     <div className="toolbar" aria-label="Text actions">
@@ -32,6 +36,14 @@ export function Toolbar({
         disabled={!canCopy}
       >
         Copy Markdown
+      </button>
+      <button
+        type="button"
+        className="button"
+        onClick={onTranslate}
+        disabled={!canTranslate}
+      >
+        Translate
       </button>
       <button type="button" className="button" onClick={onLoadSample}>
         Load sample

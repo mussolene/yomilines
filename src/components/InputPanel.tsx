@@ -3,23 +3,27 @@ import { Toolbar } from './Toolbar';
 type InputPanelProps = {
   canCopy: boolean;
   canConvert: boolean;
+  canTranslate: boolean;
   input: string;
   onChange: (value: string) => void;
   onClear: () => void;
   onConvert: () => void;
   onCopy: () => void;
   onLoadSample: () => void;
+  onTranslate: () => void;
 };
 
 export function InputPanel({
   canCopy,
   canConvert,
+  canTranslate,
   input,
   onChange,
   onClear,
   onConvert,
   onCopy,
-  onLoadSample
+  onLoadSample,
+  onTranslate
 }: InputPanelProps) {
   return (
     <section className="panel" aria-labelledby="input-title">
@@ -42,10 +46,12 @@ export function InputPanel({
       <Toolbar
         canCopy={canCopy}
         canConvert={canConvert}
+        canTranslate={canTranslate}
         onClear={onClear}
         onConvert={onConvert}
         onCopy={onCopy}
         onLoadSample={onLoadSample}
+        onTranslate={onTranslate}
       />
     </section>
   );

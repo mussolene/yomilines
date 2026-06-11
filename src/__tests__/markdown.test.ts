@@ -30,4 +30,11 @@ describe('blocksToMarkdown', () => {
 
     expect(blocksToMarkdown(blocks)).toBe('**明かり**\n**あかり**\n**akari**');
   });
+
+  it('includes translation as an optional fourth line', () => {
+    const translated = block('明かり', 'あかり', 'akari');
+    translated.translation = 'light';
+
+    expect(blocksToMarkdown([translated])).toBe('明かり\nあかり\nakari\nlight');
+  });
 });

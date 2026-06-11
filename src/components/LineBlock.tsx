@@ -24,28 +24,35 @@ export function LineBlock({ block, mode }: LineBlockProps) {
   if (mode === 'ruby') {
     return (
       <article className="line-block ruby-line" lang="ja">
-        {block.segments.map((segment, index) =>
-          segment.kind === 'space' ? (
-            <span
-              className="ruby-space"
-              key={`${segment.original}-${index}`}
-              aria-hidden="true"
-            />
-          ) : (
-            <span
-              className={`ruby-segment ruby-${segment.kind}`}
-              key={`${segment.original}-${index}`}
-            >
-              <span className="ruby-romaji" lang="en">
-                {shouldShowReading(segment) ? segment.romaji : ''}
+        <div className="ruby-segments">
+          {block.segments.map((segment, index) =>
+            segment.kind === 'space' ? (
+              <span
+                className="ruby-space"
+                key={`${segment.original}-${index}`}
+                aria-hidden="true"
+              />
+            ) : (
+              <span
+                className={`ruby-segment ruby-${segment.kind}`}
+                key={`${segment.original}-${index}`}
+              >
+                <span className="ruby-romaji" lang="en">
+                  {shouldShowReading(segment) ? segment.romaji : ''}
+                </span>
+                <span className="ruby-original">{segment.original}</span>
+                <span className="ruby-kana" lang="ja-Hira">
+                  {shouldShowReading(segment) ? segment.kana : ''}
+                </span>
               </span>
-              <span className="ruby-original">{segment.original}</span>
-              <span className="ruby-kana" lang="ja-Hira">
-                {shouldShowReading(segment) ? segment.kana : ''}
-              </span>
-            </span>
-          )
-        )}
+            )
+          )}
+        </div>
+        {block.translation ? (
+          <p lang="en" className="translation ruby-translation">
+            {block.translation}
+          </p>
+        ) : null}
       </article>
     );
   }
@@ -57,6 +64,11 @@ export function LineBlock({ block, mode }: LineBlockProps) {
       <p lang="en" className="romaji">
         {block.romaji}
       </p>
+      {block.translation ? (
+        <p lang="en" className="translation">
+          {block.translation}
+        </p>
+      ) : null}
     </article>
   );
 }

@@ -251,11 +251,25 @@ textarea {
   color: var(--text-muted);
 }
 
+.line-block .translation {
+  margin-top: 6px;
+  color: var(--primary-strong);
+}
+
 .ruby-line {
+  display: block;
+}
+
+.ruby-segments {
   display: flex;
   flex-wrap: wrap;
   align-items: end;
   gap: 12px 6px;
+}
+
+.ruby-translation {
+  margin: 12px 0 0;
+  line-height: 1.45;
 }
 
 .ruby-segment {

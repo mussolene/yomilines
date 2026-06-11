@@ -11,9 +11,20 @@ export type LineBlock = {
   original: string;
   kana: string;
   romaji: string;
+  translation?: string;
   segments: ReadingSegment[];
 };
 
-export type AppStatus = 'ready' | 'loading' | 'error' | 'copied';
+export type AppStatus =
+  | 'ready'
+  | 'loading'
+  | 'translating'
+  | 'error'
+  | 'copied';
 
 export type OutputMode = 'ruby' | 'lines';
+
+export type TranslationProgress = {
+  message: string;
+  percent?: number;
+};

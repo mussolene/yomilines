@@ -129,6 +129,36 @@ textarea:focus-visible {
   margin-bottom: 18px;
 }
 
+.output-tools {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.segmented-control {
+  display: inline-flex;
+  min-height: 44px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-muted);
+}
+
+.segmented-control button {
+  min-width: 62px;
+  border: 0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0 12px;
+}
+
+.segmented-control button[aria-pressed='true'] {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
 .count {
   display: inline-grid;
   min-width: 44px;
@@ -219,6 +249,49 @@ textarea {
 
 .line-block .romaji {
   color: var(--text-muted);
+}
+
+.ruby-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px 6px;
+}
+
+.ruby-segment {
+  display: inline-grid;
+  min-width: max-content;
+  grid-template-rows: 1.1em 1.6em 1.15em;
+  justify-items: center;
+  line-height: 1.1;
+  vertical-align: bottom;
+}
+
+.ruby-romaji,
+.ruby-kana {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.ruby-romaji {
+  opacity: 0.74;
+}
+
+.ruby-original {
+  align-self: center;
+  font-size: 1.08rem;
+}
+
+.ruby-punctuation {
+  min-width: auto;
+}
+
+.ruby-punctuation .ruby-original {
+  align-self: end;
+}
+
+.ruby-space {
+  width: 0.65em;
 }
 
 .empty-state,

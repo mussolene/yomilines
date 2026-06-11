@@ -27,7 +27,15 @@ describe('security helpers', () => {
       {
         original: '<img src=x onerror=alert(1)>',
         kana: '<script>alert(1)</script>',
-        romaji: '[x](javascript:alert(1))'
+        romaji: '[x](javascript:alert(1))',
+        segments: [
+          {
+            original: '<img src=x onerror=alert(1)>',
+            kana: '<script>alert(1)</script>',
+            romaji: '[x](javascript:alert(1))',
+            kind: 'word'
+          }
+        ]
       }
     ]);
 

@@ -2,11 +2,20 @@ import { describe, expect, it } from 'vitest';
 import { blocksToMarkdown } from '../domain/markdown';
 import type { LineBlock } from '../domain/types';
 
+function block(original: string, kana: string, romaji: string): LineBlock {
+  return {
+    original,
+    kana,
+    romaji,
+    segments: [{ original, kana, romaji, kind: 'word' }]
+  };
+}
+
 describe('blocksToMarkdown', () => {
   it('exports compact three-line blocks separated by blank lines', () => {
     const blocks: LineBlock[] = [
-      { original: '明かり', kana: 'あかり', romaji: 'akari' },
-      { original: '夜', kana: 'よる', romaji: 'yoru' }
+      block('明かり', 'あかり', 'akari'),
+      block('夜', 'よる', 'yoru')
     ];
 
     expect(blocksToMarkdown(blocks)).toBe(
@@ -16,7 +25,7 @@ describe('blocksToMarkdown', () => {
 
   it('keeps markdown-like input as plain text', () => {
     const blocks: LineBlock[] = [
-      { original: '**明かり**', kana: '**あかり**', romaji: '**akari**' }
+      block('**明かり**', '**あかり**', '**akari**')
     ];
 
     expect(blocksToMarkdown(blocks)).toBe('**明かり**\n**あかり**\n**akari**');

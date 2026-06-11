@@ -15,6 +15,16 @@ describe('convertLine', () => {
     expect(block.kana).toContain('みれん');
     expect(block.romaji).toContain('akari');
     expect(block.romaji).toContain('midnight');
+    expect(block.segments).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          original: '明かり',
+          kana: 'あかり',
+          romaji: 'a ka ri',
+          kind: 'word'
+        })
+      ])
+    );
   });
 
   it('preserves mixed English and Japanese text', async () => {

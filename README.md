@@ -15,6 +15,8 @@ v1 does not translate text and does not call AI, translation, analytics, or othe
 - Japanese morphological analysis in the browser with `kuromoji`.
 - Kana conversion and romaji generation with `wanakana`.
 - Mixed Japanese, Latin words, numbers, punctuation, emoji, and spacing are preserved where the tokenizer exposes them.
+- Ruby-style preview mode groups each token with small romaji above and kana below.
+- Line preview mode keeps the original three-line block view.
 - Copy output as plain Markdown text.
 - Responsive two-pane layout with light and dark color schemes.
 - Static GitHub Pages deployment with no backend, cookies, sessions, or secrets.
@@ -24,6 +26,7 @@ v1 does not translate text and does not call AI, translation, analytics, or othe
 - Readings depend on the bundled IPADIC dictionary used by `kuromoji`; unusual names, ateji, stylized lyrics, or slang can be wrong.
 - Romaji is derived from the kana reading line, not from a separate pronunciation model.
 - Empty lines are ignored for conversion, while copied blocks are separated by blank lines.
+- Ruby-style romaji is split by kana mora for readability; copied Markdown still uses normal romaji words.
 - Offline use is possible after the page and dictionary assets have been loaded by the browser, subject to browser caching behavior.
 
 ## Architecture

@@ -6,7 +6,7 @@ import { OutputPanel } from './components/OutputPanel';
 import { blocksToMarkdown } from './domain/markdown';
 import { copyPlainText } from './domain/security';
 import { convertText } from './domain/convertText';
-import type { AppStatus, LineBlock } from './domain/types';
+import type { AppStatus, LineBlock, OutputMode } from './domain/types';
 
 const sampleText = `明かりの灯ったmidnight エゴと欲と未練が行き交う
 静かな夜に君を探してる`;
@@ -19,6 +19,7 @@ export function App() {
   const [input, setInput] = useState(sampleText);
   const [blocks, setBlocks] = useState<LineBlock[]>([]);
   const [status, setStatus] = useState<AppStatus>('ready');
+  const [outputMode, setOutputMode] = useState<OutputMode>('ruby');
   const [error, setError] = useState<string>('');
   const markdown = useMemo(() => blocksToMarkdown(blocks), [blocks]);
   const isLoading = status === 'loading';
@@ -84,7 +85,11 @@ export function App() {
           onCopy={handleCopy}
           onLoadSample={handleLoadSample}
         />
-        <OutputPanel blocks={blocks} />
+        <OutputPanel
+          blocks={blocks}
+          mode={outputMode}
+          onModeChange={setOutputMode}
+        />
       </div>
 
       <footer className="app-footer">

@@ -16,7 +16,7 @@ describe('App', () => {
     render(<App />);
 
     await userEvent.click(screen.getByRole('button', { name: 'Convert' }));
-    expect(await screen.findByText(/akari/)).toBeInTheDocument();
+    expect(await screen.findByText('a ka ri')).toBeInTheDocument();
 
     await userEvent.click(
       screen.getByRole('button', { name: 'Copy Markdown' })
@@ -37,6 +37,7 @@ describe('App', () => {
       '<script>alert(1)</script>{enter}<img src=x onerror=alert(1)>'
     );
     await userEvent.click(screen.getByRole('button', { name: 'Convert' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Lines' }));
 
     const output = await screen.findAllByText('<script>alert(1)</script>');
     expect(output.length).toBeGreaterThan(0);

@@ -1,0 +1,266 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f8faf7;
+  --surface: #ffffff;
+  --surface-muted: #eef3ec;
+  --text: #17201b;
+  --text-muted: #5b665f;
+  --primary: #1b6653;
+  --primary-strong: #0d4f3f;
+  --on-primary: #ffffff;
+  --border: #ccd8d0;
+  --danger: #a82d36;
+  --focus: #b45a00;
+  --shadow: 0 18px 50px rgb(24 38 30 / 12%);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101411;
+    --surface: #1a211d;
+    --surface-muted: #242d28;
+    --text: #edf4ef;
+    --text-muted: #b7c4bd;
+    --primary: #7ed9be;
+    --primary-strong: #9ae8d2;
+    --on-primary: #07382b;
+    --border: #38443e;
+    --danger: #ffb3b9;
+    --focus: #ffbf66;
+    --shadow: 0 18px 50px rgb(0 0 0 / 28%);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.app-shell {
+  width: min(1180px, calc(100% - 32px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.app-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.app-header h1,
+.panel h2 {
+  margin: 0;
+  line-height: 1.1;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+}
+
+.header-copy {
+  max-width: 420px;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--primary-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.panel {
+  display: flex;
+  min-height: 620px;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.panel-header {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.count {
+  display: inline-grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--surface-muted);
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.textarea-label {
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+textarea {
+  width: 100%;
+  min-height: 420px;
+  flex: 1;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-muted);
+  color: var(--text);
+  line-height: 1.7;
+  padding: 14px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.button {
+  min-height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-weight: 700;
+  padding: 0 16px;
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--primary);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.52;
+}
+
+.button-primary {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.button-quiet {
+  color: var(--text-muted);
+}
+
+.output-scroll {
+  overflow: auto;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.line-block {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.line-block:first-child {
+  padding-top: 0;
+}
+
+.line-block p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.65;
+}
+
+.line-block .romaji {
+  color: var(--text-muted);
+}
+
+.empty-state,
+.status {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.status-error {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.app-footer {
+  min-height: 48px;
+  padding: 18px 2px 0;
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    width: min(100% - 24px, 680px);
+    padding: 20px 0;
+  }
+
+  .app-header {
+    display: block;
+  }
+
+  .header-copy {
+    margin-top: 10px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    min-height: auto;
+  }
+
+  textarea {
+    min-height: 300px;
+  }
+}

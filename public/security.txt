@@ -1,0 +1,4 @@
+Contact: https://github.com/your-org/yomilines/security/advisories/new
+Policy: https://github.com/your-org/yomilines#security-model
+Preferred-Languages: en, ja
+Expires: 2027-06-11T00:00:00Z
